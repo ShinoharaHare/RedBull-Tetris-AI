@@ -1,0 +1,15 @@
+[project]
+name = "red_bull_tetris_ai"
+version = "0.0.0"
+dependencies = [
+    "fire==0.7.1",
+    "pillow==11.3.0",
+    "pygame==2.6.1",
+    "pytesseract==0.3.13",
+    "safetensors==0.6.2",
+    "selenium==4.35.0",
+    "torch==2.8.0",
+    "torchvision==0.23.0",
+    "tqdm==4.67.1"
+]
+requires-python = ">=3.10"
