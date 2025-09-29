@@ -50,7 +50,7 @@ class TetrisDQNState:
             state=torch.tensor(
                 [
                     [
-                        state.num_lines_cleared,
+                        state.last_lines_cleared,
                         state.num_holes,
                         state.height.sum().item(),
                         state.height.max().item(),
@@ -164,7 +164,7 @@ class TetrisDQNAgent(nn.Module):
         return actions[index]
 
     @classmethod
-    def from_pretrained(cls, path: str) -> Self:
-        model = cls()
+    def from_pretrained(cls, path: str, *args, **kwargs) -> Self:
+        model = cls(*args, **kwargs)
         safetensors.torch.load_model(model, path)
         return model
