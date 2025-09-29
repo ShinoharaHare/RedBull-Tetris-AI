@@ -307,10 +307,6 @@ class Tetris:
             state.special_item_index += 1
             self.bag.set_special_item(state.special_item_index)
 
-        reward = score * 0.01
-        # reward -= max(0, state.max_height - 10) ** 2
-        state.last_reward_gained = reward
-
         if not new_tetrimino:
             return
 
@@ -329,6 +325,8 @@ class Tetris:
                 state.current_position
             )
             state.survived = False
+
+        state.last_reward_gained = 1 + [0, 1, 3, 5, 8][state.last_lines_cleared]
 
     def init(self, title: str = 'Tetris') -> None:
         pygame.init()
