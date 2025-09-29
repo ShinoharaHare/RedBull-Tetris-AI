@@ -15,7 +15,7 @@ Transition = tuple[TetrisDQNState, float, TetrisDQNState, bool]
 
 
 def main(
-    experiment_name: str = 'tetris_dqn_agent',
+    save_dir: str | Path,
     save_every_n_episodes: int = 1000,
     batch_size: int = 512,
     memory_size: int = 38400,
@@ -29,13 +29,17 @@ def main(
     num_decay_episodes: int = 2000,
     num_batch_per_episode: int = 1,
     gamma: float = 0.9999,
-    device: torch.device = torch.device('cuda'),
+    device: torch.device | str | None = None,
     resume: bool = True,
     resume_optimizer: bool = True,
     resume_memory: bool = True
 ):
-    save_dir = Path('checkpoints') / experiment_name
     save_dir = Path(save_dir)
+
+    if device is None:
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    elif isinstance(device, str):
+        device = torch.device(device)
 
     model = TetrisDQNAgent()
     model.train().to(device)
@@ -55,7 +59,7 @@ def main(
             optimizer.load_state_dict(torch.load(checkpoint_path / 'optimizer.pt'))
 
         if resume_memory:
-            memory.load_state_dict(torch.load(checkpoint_path / 'memory.pt'))
+            memory.load_state_dict(torch.load(checkpoint_path / 'memory.pt', weights_only=False))
 
     else:
         episode = 0
